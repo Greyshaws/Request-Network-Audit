@@ -90,14 +90,15 @@ Consider the above function, there are input validations for the _amount and _fe
     * **Description**: The contract may not be optimized for gas efficiency, which could potentially make it more expensive to use and less attractive to users. If the gas requirement of a function is higher than the block gas limit, it cannot be executed. 
     * **File**: ERC20EscrowToPay.sol
     * **Exploit**: For instance, this 'payEscrow' function:
-    ` function payEscrow(
+    ``` 
+    function payEscrow(
     address _tokenAddress,
     address _to,
     uint256 _amount,
     bytes memory _paymentRef,
     uint256 _feeAmount,
     address _feeAddress
-  ) external IsNotInEscrow(_paymentRef) {
+    ) external IsNotInEscrow(_paymentRef) {
     if (_amount == 0 || _feeAmount == 0) revert('Zero Value');
     require(_to != address(0), 'payee address cannot be 0');
 
@@ -124,7 +125,8 @@ Consider the above function, there are input validations for the _amount and _fe
       )
     );
     require(status, 'transferFromWithReferenceAndFee failed');
-  }`
+    }
+    ```
   
   The assignment to the requestMapping mapping is likely to be gas-intensive, especially if the mapping is large or the values being assigned are large
     * **Recommendation**: This can be mitigated by using more efficient algorithms, reducing the number of external contract calls, and minimizing the use of storage operations. Avoid loops in your functions or actions that modify large areas of storage (this includes clearing or copying arrays in storage). Also, consider using the procedural way to define a variable of struct type.
